@@ -21,13 +21,15 @@ builder.Services.AddSession(options => {
 var app = builder.Build();
 
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
+//if (!app.Environment.IsDevelopment())
+//{
+//    app.UseExceptionHandler("/Home/Error");
+//    app.UseHsts();
+//}
 
-app.UseHttpsRedirection();
+app.UseDeveloperExceptionPage();
+
+//app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();
 app.UseAuthentication();
