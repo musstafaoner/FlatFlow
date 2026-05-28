@@ -38,12 +38,13 @@ namespace FlatFlow.Models
                 .HasOne(a => a.Site)
                 .WithMany()
                 .HasForeignKey(a => a.SiteId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ArizaTalep>()
                 .HasOne(a => a.Site)
                 .WithMany()
                 .HasForeignKey(a => a.SiteId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }
