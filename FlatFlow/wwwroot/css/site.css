@@ -1,31 +1,130 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* FLATFLOW PREMIUM DARK THEME */
 body {
-  margin-bottom: 60px;
+    background-color: #0f172a; /* Modern koyu lacivert/gri arka plan */
+    color: #e2e8f0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Kartlar ve Konteynerlar */
+.card {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* Bootstrap Varsayılan Renklerini Ezme */
+.text-dark {
+    color: #f8fafc !important;
 }
+
+.bg-light, .bg-white {
+    background-color: #1e293b !important;
+}
+
+.text-muted {
+    color: #94a3b8 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #f8fafc !important;
+}
+
+/* Üst Menü (Navbar) */
+.navbar {
+    background-color: #0f172a !important;
+    border-bottom: 1px solid #334155 !important;
+}
+
+.navbar-brand {
+    color: #38bdf8 !important; /* Premium mavi vurgu */
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: #cbd5e1 !important;
+    transition: color 0.3s ease;
+}
+
+    .nav-link:hover {
+        color: #38bdf8 !important;
+    }
+
+/* Tablolar (Aidatlar, Daireler, Arızalar için) */
+.table {
+    color: #e2e8f0;
+    border-color: #334155;
+}
+
+.table-light th {
+    background-color: #334155 !important;
+    color: #f8fafc !important;
+    border-color: #475569;
+    font-weight: 600;
+}
+
+.table td, .table th {
+    border-color: #334155;
+    background-color: transparent !important;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover td {
+    background-color: #1e293b !important;
+}
+
+/* Form Elemanları (İnputlar ve Selectler) */
+.form-control, .form-select {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    color: #f8fafc;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+}
+
+    .form-control:focus, .form-select:focus {
+        background-color: #1e293b;
+        border-color: #38bdf8;
+        color: #f8fafc;
+        box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.15);
+    }
+
+.form-label {
+    color: #cbd5e1;
+}
+
+/* Listeler ve Duyuru Panosu */
+.list-group-item {
+    background-color: transparent;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+/* Uyarı Mesajları (Alerts) */
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+    color: #34d399 !important;
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+    color: #f87171 !important;
+}
+
+/* Butonlar İçin Küçük Dokunuşlar */
+.btn {
+    border-radius: 0.5rem;
+}
+
+.btn-light {
+    background-color: #334155 !important;
+    color: #f8fafc !important;
+    border: none;
+    transition: all 0.2s;
+}
+
+    .btn-light:hover {
+        background-color: #475569 !important;
+        transform: translateY(-2px);
+    }

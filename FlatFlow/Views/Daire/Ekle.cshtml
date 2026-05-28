@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Yeni Daire Ekle";
+    // Listeyi artık kendi orijinal modeliyle (Kullanici) karşılıyoruz
+    var sakinler = ViewBag.Sakinler as List<FlatFlow.Models.Kullanici>;
+}
+
+<h2 class="text-success mt-3 mb-4">Yeni Daire Oluştur</h2>
+
+<div class="card shadow-sm p-4" style="max-width: 600px;">
+    
+    <form action="/Daire/Ekle" method="post">
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Blok Adı</label>
+            <input type="text" name="Blok" class="form-control" placeholder="Örn: A Blok" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Kapı Numarası</label>
+            <input type="text" name="KapiNumarasi" class="form-control" placeholder="Örn: 15" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Daire Tipi</label>
+            <select name="Tip" class="form-select" required>
+                <option value="">Seçiniz...</option>
+                <option value="1+1">1+1</option>
+                <option value="2+1">2+1</option>
+                <option value="3+1">3+1</option>
+                <option value="Dükkan">Dükkan / İşyeri</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">Oturan Sakin (İsteğe Bağlı)</label>
+            
+            <select name="KullaniciId" class="form-select">
+                <option value="">-- Daire Boş --</option>
+                
+                @if (sakinler != null)
+                {
+                    foreach (var sakin in sakinler)
+                    {
+                        // Eğer Eposta boşsa bile HTML çökmez, sorunsuzca çalışır.
+                        <option value="@sakin.KullaniciId">@(sakin.Eposta ?? "E-postasız Kullanıcı")</option>
+                    }
+                }
+            </select>
+            <small class="text-muted">Eğer daire boşsa seçmeden geçebilirsiniz.</small>
+        </div>
+
+        <button type="submit" class="btn btn-success fw-bold w-100 py-2">Daireyi Kaydet</button>
+        <a href="/Daire/Index" class="btn btn-secondary w-100 mt-2">Listeye Dön</a>
+    </form>
+</div>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<FlatFlow.Models.Aidat>
+@{
+    ViewData["Title"] = "Borçlarım";
+}
+
+<h2 class="text-primary mt-3 mb-4">Mevcut Borçlarım ve Aidat Takibi</h2>
+
+<div class="card shadow-sm p-3">
+    <table class="table table-hover table-bordered mt-2">
+        <thead class="table-light">
+            <tr>
+                <th>Daire Bilgisi</th>
+                <th>Dönem (Ay/Yıl)</th>
+                <th>Tutar (₺)</th>
+                <th>Durum</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">Üzerinize tanımlı herhangi bir borç bulunmamaktadır.</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td><b>@item.Daire.Blok Blok</b> - Daire: @item.Daire.KapiNumarasi</td>
+                        <td>@item.Ay / @item.Yil</td>
+                        <td class="fw-bold text-danger">@item.Tutar ₺</td>
+                        <td>
+                            @if (item.OdendiMi)
+                            {
+                                <span class="badge bg-success">Ödendi</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Ödenmedi</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!item.OdendiMi)
+                            {
+                                <form action="/Sakin/OdemeYap" method="post" style="display:inline;">
+                                    <input type="hidden" name="aidatId" value="@item.AidatId" />
+                                    <button type="submit" class="btn btn-sm btn-success fw-bold">Kredi Kartı ile Öde</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <button class="btn btn-sm btn-secondary" disabled>Makbuz İndir</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

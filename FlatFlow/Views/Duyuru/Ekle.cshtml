@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Yeni Duyuru Yayınla";
+}
+
+<h2 class="text-primary mt-3 mb-4">Apartman Panosuna Duyuru Yaz</h2>
+
+<div class="card shadow-sm p-4" style="max-width: 700px;">
+    <div class="alert alert-info border-0 shadow-sm mb-4">
+        <i class="bi bi-info-circle-fill"></i> 
+        <b>Bilgi:</b> Burada yayınladığınız duyurular tüm bina sakinlerinin anasayfasında anlık olarak görünecektir.
+    </div>
+
+    <form action="/Duyuru/Ekle" method="post">
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Duyuru Başlığı</label>
+            <input type="text" name="Baslik" class="form-control form-control-lg" placeholder="Örn: Su Kesintisi Hakkında" required />
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">Duyuru İçeriği</label>
+            <textarea name="Icerik" class="form-control" rows="6" placeholder="Bina sakinlerine iletmek istediğiniz detaylı mesajı buraya yazın..." required></textarea>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary fw-bold px-4 py-2">
+                <i class="bi bi-send-fill"></i> Duyuruyu Yayınla
+            </button>
+            <a href="/Home/Index" class="btn btn-light px-4 py-2">Vazgeç</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Arıza Bildir";
+}
+
+<h2 class="text-danger mt-3 mb-4">Yeni Arıza Bildirimi</h2>
+
+<div class="card shadow-sm p-4" style="max-width: 600px;">
+    <form action="/Sakin/ArizaBildir" method="post">
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Konu Başlığı</label>
+            <input type="text" name="Baslik" class="form-control" placeholder="Örn: Asansör Çalışmıyor" required />
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">Arıza Detayı</label>
+            <textarea name="Aciklama" class="form-control" rows="4" placeholder="Lütfen sorunu detaylıca açıklayın..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-danger fw-bold w-100 py-2">Bildirimi Gönder</button>
+        <a href="/Sakin/Arizalarim" class="btn btn-secondary w-100 mt-2">İptal Et</a>
+    </form>
+</div>

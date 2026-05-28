@@ -1,0 +1,49 @@
+﻿@model IEnumerable<FlatFlow.Models.ArizaTalep>
+@{
+    ViewData["Title"] = "Arıza Yönetimi";
+}
+
+<h2 class="text-primary mt-3 mb-4">Gelen Arıza ve Talep Bildirimleri</h2>
+
+<div class="card shadow-sm p-3">
+    <table class="table table-hover table-bordered mt-2">
+        <thead class="table-light">
+            <tr>
+                <th>Tarih</th>
+                <th>Bildiren Kişi (E-posta)</th>
+                <th>Başlık / Açıklama</th>
+                <th>Mevcut Durum</th>
+                <th>Durumu Güncelle</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td class="fw-bold">@item.Kullanici.Eposta</td>
+                    <td>
+                        <b>@item.Baslik</b><br />
+                        <small class="text-muted">@item.Aciklama</small>
+                    </td>
+                    <td>
+                        @if (item.Durum == "Beklemede") { <span class="badge bg-warning text-dark">Beklemede</span> }
+                        else if (item.Durum == "Çözülüyor") { <span class="badge bg-primary">Çözülüyor</span> }
+                        else { <span class="badge bg-success">Çözüldü</span> }
+                    </td>
+                    <td>
+                        <form action="/Ariza/DurumGuncelle" method="post" class="d-flex gap-2">
+                            <input type="hidden" name="id" value="@item.ArizaTalepId" />
+                            <select name="yeniDurum" class="form-select form-select-sm">
+                                <option value="Beklemede" selected="@(item.Durum == "Beklemede")">Beklemede</option>
+                                <option value="Çözülüyor" selected="@(item.Durum == "Çözülüyor")">Çözülüyor</option>
+                                <option value="Çözüldü" selected="@(item.Durum == "Çözüldü")">Çözüldü</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Kaydet</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

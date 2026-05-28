@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Aidat Yansıt";
+    var daireler = ViewBag.Daireler as List<FlatFlow.Models.Daire>;
+}
+
+<h2 class="text-success mt-3 mb-4">Daireye Aidat Yansıt</h2>
+
+<div class="card shadow-sm p-4" style="max-width: 600px;">
+    
+    <form action="/Aidat/Ekle" method="post">
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Hangi Daireye Yansıtılacak?</label>
+            <select name="DaireId" class="form-select" required>
+                <option value="">Daire Seçiniz...</option>
+                @if (daireler != null)
+                {
+                    foreach (var daire in daireler)
+                    {
+                        <option value="@daire.DaireId">@daire.Blok Blok - Kapı No: @daire.KapiNumarasi</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Tutar (₺)</label>
+            <input type="number" step="0.01" name="Tutar" class="form-control" placeholder="Örn: 500" required />
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Ay</label>
+                <select name="Ay" class="form-select" required>
+                    <option value="">Seçiniz...</option>
+                    @for (int i = 1; i <= 12; i++)
+                    {
+                        <option value="@i">@i. Ay</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 mb-4">
+                <label class="form-label fw-bold">Yıl</label>
+                <input type="number" name="Yil" class="form-control" value="@DateTime.Now.Year" required />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success fw-bold w-100 py-2">Aidatı Yansıt</button>
+        <a href="/Aidat/Index" class="btn btn-secondary w-100 mt-2">Listeye Dön</a>
+    </form>
+</div>

@@ -11,11 +11,9 @@ namespace FlatFlow.Models
         public string Sifre { get; set; }
         public string TelefonNumarasi { get; set; }
 
-        // Foreign Key
         public int RolId { get; set; }
         public Rol Rol { get; set; }
 
-        // Navigation Properties
         public ICollection<Daire> Daireler { get; set; }
         public ICollection<Odeme> Odemeler { get; set; }
         public ICollection<ArizaTalep> ArizaTalepleri { get; set; }

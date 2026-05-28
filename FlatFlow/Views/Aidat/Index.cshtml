@@ -1,0 +1,42 @@
+﻿@model IEnumerable<FlatFlow.Models.Aidat>
+@{
+    ViewData["Title"] = "Aidat Yönetimi";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+    <h2 class="text-primary">Aidat ve Borç Listesi</h2>
+    <a href="/Aidat/Ekle" class="btn btn-success fw-bold">+ Yeni Aidat Yansıt</a>
+</div>
+
+<div class="card shadow-sm p-3">
+    <table class="table table-hover table-bordered mt-2">
+        <thead class="table-light">
+            <tr>
+                <th>Daire (Blok - No)</th>
+                <th>Dönem (Ay/Yıl)</th>
+                <th>Tutar (₺)</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@item.Daire.Blok Blok - No: @item.Daire.KapiNumarasi</td>
+                    <td>@item.Ay / @item.Yil</td>
+                    <td>@item.Tutar ₺</td>
+                    <td>
+                        @if (item.OdendiMi)
+                        {
+                            <span class="badge bg-success">Ödendi</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Ödenmedi</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

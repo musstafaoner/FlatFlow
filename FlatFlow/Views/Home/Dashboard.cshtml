@@ -1,0 +1,149 @@
+﻿@model IEnumerable<FlatFlow.Models.Duyuru>
+@{
+    ViewData["Title"] = "Dashboard";
+    // Sayfanın her yerinde if (User.IsInRole("Yonetici")) yazmamak için bunu bir değişkene atıyoruz:
+    bool yoneticiMi = User.IsInRole("Yonetici"); 
+}
+
+<div class="mt-4 mb-5">
+    <h1 class="fw-bold text-dark">Flat<span>Flow</span> @(yoneticiMi ? "Yönetim Paneli" : "Sakin Paneli")</h1>
+    <p class="text-muted fs-5">
+        Hoş Geldiniz, @User.Identity.Name. 
+        @(yoneticiMi ? "Apartman ve sitenizin genel durumunu tek bakışta inceleyin." : "Güncel borçlarınızı ve site duyurularını buradan takip edebilirsiniz.")
+    </p>
+</div>
+
+@if (yoneticiMi)
+{
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-light rounded-4 p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="text-muted text-uppercase fw-bold mb-0">Toplam Daire</h6>
+                    <i class="fa-solid fa-building text-primary fs-3"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-dark mb-0">@ViewBag.ToplamDaire</h1>
+                <div class="progress mt-3" style="height: 10px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-light rounded-4 p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="text-muted text-uppercase fw-bold mb-0">Dolu Daire</h6>
+                    <i class="fa-solid fa-user-check text-success fs-3"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-dark mb-0">@ViewBag.DoluDaire</h1>
+                @if (ViewBag.ToplamDaire != null && ViewBag.ToplamDaire > 0)
+                {
+                    var dolulukOrani = (int)((double)ViewBag.DoluDaire / ViewBag.ToplamDaire * 100);
+                    <div class="progress mt-3" style="height: 10px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: @dolulukOrani%;" aria-valuenow="@dolulukOrani" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <small class="text-muted mt-2 d-block">Doluluk Oranı: %@dolulukOrani</small>
+                }
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-light rounded-4 p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="text-muted text-uppercase fw-bold mb-0">Bekleyen Arıza</h6>
+                    <i class="fa-solid fa-tools text-warning fs-3"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-dark mb-0">@ViewBag.BekleyenAriza</h1>
+                <div class="progress mt-3" style="height: 10px;">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-light rounded-4 p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="text-muted text-uppercase fw-bold mb-0">Kasadaki Tutar</h6>
+                    <i class="fa-solid fa-file-invoice-dollar text-danger fs-3"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-dark mb-0">@ViewBag.Kasa ₺</h1>
+                <div class="progress mt-3" style="height: 10px;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-success shadow-sm border-0 rounded-4 p-4 mb-5">
+        <h4 class="alert-heading fw-bold mb-3"><i class="fa-solid fa-house-user text-success me-2"></i> Dairenize Hoş Geldiniz!</h4>
+        <p class="fs-6">FlatFlow paneli üzerinden <strong>güncel borçlarınızı</strong> takip edebilir, site yönetimi tarafından yayınlanan <strong>duyuruları</strong> okuyabilir ve teknik problemler için <strong>arıza bildirimi</strong> oluşturabilirsiniz.</p>
+        <hr>
+        <p class="mb-0 text-muted"><i class="fa-solid fa-circle-info me-2"></i> Lütfen aidat ödemelerinizi ay sonuna kadar gerçekleştirmeyi unutmayın.</p>
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="fw-bold text-dark"><i class="fa-solid fa-megaphone text-primary me-2"></i>Son Duyurular</h3>
+            @if (yoneticiMi)
+            {
+                <a href="/Duyuru/Ekle" class="btn btn-sm btn-outline-primary fw-bold">+ Yeni Duyuru Ekle</a>
+            }
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 p-3 bg-white">
+            @if (Model == null || !Model.Any())
+            {
+                <div class="text-center text-muted py-4">Sistemde henüz yayınlanmış bir duyuru bulunmuyor.</div>
+            }
+            else
+            {
+                <div class="list-group list-group-flush">
+                    @foreach (var duyuru in Model)
+                    {
+                        <div class="list-group-item py-4 px-0 border-bottom">
+                            <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                <h5 class="fw-bold text-primary mb-0">@duyuru.Baslik</h5>
+                                <small class="text-muted bg-light px-2 py-1 rounded text-uppercase fw-bold" style="font-size: 12px;">@duyuru.OlusturulmaTarihi.ToString("dd MMM yyyy - HH:mm")</small>
+                            </div>
+                            <p class="mb-0 text-dark mt-3 fs-6" style="line-height: 1.6;">@duyuru.Icerik</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <h3 class="fw-bold text-dark mb-3">Hızlı İşlemler</h3>
+        <div class="card shadow-sm border-0 rounded-4 p-3 bg-white">
+            <div class="d-grid gap-3">
+                @if (yoneticiMi)
+                {
+                    <a href="/Daire/Index" class="btn btn-light text-start py-3 fw-bold border-0 rounded-3 shadow-none h-100 d-flex align-items-center">
+                        <i class="fa-solid fa-building fs-5 text-primary me-3"></i> 🏢 Daireleri Yönet
+                    </a>
+                    <a href="/Aidat/Index" class="btn btn-light text-start py-3 fw-bold border-0 rounded-3 shadow-none h-100 d-flex align-items-center">
+                        <i class="fa-solid fa-file-invoice-dollar fs-5 text-danger me-3"></i> 💰 Aidat Yansıt
+                    </a>
+                    <a href="/Ariza/Index" class="btn btn-light text-start py-3 fw-bold border-0 rounded-3 shadow-none h-100 d-flex align-items-center">
+                        <i class="fa-solid fa-tools fs-5 text-warning me-3"></i> 🛠️ Arızaları İncele
+                    </a>
+                }
+                else
+                {
+                    <a href="/Sakin/Borclarim" class="btn btn-light text-start py-3 fw-bold border-0 rounded-3 shadow-none h-100 d-flex align-items-center">
+                        <i class="fa-solid fa-credit-card fs-5 text-success me-3"></i> 💳 Borç Öde
+                    </a>
+                    <a href="/Sakin/Arizalarim" class="btn btn-light text-start py-3 fw-bold border-0 rounded-3 shadow-none h-100 d-flex align-items-center">
+                        <i class="fa-solid fa-wrench fs-5 text-danger me-3"></i> 🛠️ Yeni Arıza Bildir
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit-code.js" crossorigin="anonymous"></script>
+}
