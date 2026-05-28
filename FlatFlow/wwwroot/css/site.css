@@ -1,18 +1,15 @@
-/* FLATFLOW PREMIUM DARK THEME */
 body {
-    background-color: #0f172a; /* Modern koyu lacivert/gri arka plan */
+    background-color: #0f172a; 
     color: #e2e8f0;
     font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* Kartlar ve Konteynerlar */
 .card {
     background-color: #1e293b !important;
     border: 1px solid #334155 !important;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Bootstrap Varsayılan Renklerini Ezme */
 .text-dark {
     color: #f8fafc !important;
 }
@@ -29,14 +26,13 @@ h1, h2, h3, h4, h5, h6 {
     color: #f8fafc !important;
 }
 
-/* Üst Menü (Navbar) */
 .navbar {
     background-color: #0f172a !important;
     border-bottom: 1px solid #334155 !important;
 }
 
 .navbar-brand {
-    color: #38bdf8 !important; /* Premium mavi vurgu */
+    color: #38bdf8 !important; 
     font-size: 1.5rem;
 }
 
@@ -49,7 +45,6 @@ h1, h2, h3, h4, h5, h6 {
         color: #38bdf8 !important;
     }
 
-/* Tablolar (Aidatlar, Daireler, Arızalar için) */
 .table {
     color: #e2e8f0;
     border-color: #334155;
@@ -72,7 +67,6 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #1e293b !important;
 }
 
-/* Form Elemanları (İnputlar ve Selectler) */
 .form-control, .form-select {
     background-color: #0f172a;
     border: 1px solid #334155;
@@ -92,14 +86,12 @@ h1, h2, h3, h4, h5, h6 {
     color: #cbd5e1;
 }
 
-/* Listeler ve Duyuru Panosu */
 .list-group-item {
     background-color: transparent;
     border-color: #334155;
     color: #e2e8f0;
 }
 
-/* Uyarı Mesajları (Alerts) */
 .alert-success {
     background-color: rgba(16, 185, 129, 0.1) !important;
     border: 1px solid rgba(16, 185, 129, 0.2) !important;
@@ -112,7 +104,6 @@ h1, h2, h3, h4, h5, h6 {
     color: #f87171 !important;
 }
 
-/* Butonlar İçin Küçük Dokunuşlar */
 .btn {
     border-radius: 0.5rem;
 }

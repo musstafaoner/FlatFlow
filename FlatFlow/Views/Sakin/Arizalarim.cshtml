@@ -3,44 +3,60 @@
     ViewData["Title"] = "Arıza Kayıtlarım";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-    <h2 class="text-primary">Arıza ve Talep Bildirimlerim</h2>
-    <a href="/Sakin/ArizaBildir" class="btn btn-danger fw-bold">+ Yeni Arıza Bildir</a>
+<div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+    <h2 class="fw-bold mb-0" style="color: #ffffff !important;">Arıza ve Talep <span style="color: #38bdf8 !important;">Bildirimlerim</span></h2>
+    <a href="/Sakin/ArizaBildir" class="btn fw-bold" style="background-color: #ef4444; color: #fff; border-radius: 10px; padding: 10px 20px; transition: 0.3s;">
+        <i class="fa-solid fa-plus me-2"></i> Yeni Arıza Bildir
+    </a>
 </div>
 
-<div class="card shadow-sm p-3">
-    <table class="table table-hover table-bordered mt-2">
-        <thead class="table-light">
-            <tr>
-                <th>Tarih</th>
-                <th>Başlık</th>
-                <th>Açıklama</th>
-                <th>Durum</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model == null || !Model.Any())
-            {
+<div class="custom-card p-0">
+    <div class="table-responsive">
+        <table class="table table-borderless mb-0">
+            <thead>
                 <tr>
-                    <td colspan="4" class="text-center py-4">Henüz bir arıza kaydı oluşturmadınız.</td>
+                    <th>Tarih</th>
+                    <th>Başlık</th>
+                    <th>Açıklama</th>
+                    <th class="text-end pe-4">Durum</th>
                 </tr>
-            }
-            else
-            {
-                foreach (var item in Model)
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
                 {
                     <tr>
-                        <td>@item.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
-                        <td class="fw-bold">@item.Baslik</td>
-                        <td>@item.Aciklama</td>
-                        <td>
-                            @if (item.Durum == "Beklemede") { <span class="badge bg-warning text-dark">Beklemede</span> }
-                            else if (item.Durum == "Çözülüyor") { <span class="badge bg-primary">Çözülüyor</span> }
-                            else { <span class="badge bg-success">Çözüldü</span> }
+                        <td colspan="4" class="text-center py-5" style="color: #64748b;">
+                            <i class="fa-solid fa-screwdriver-wrench fs-2 mb-3 d-block" style="color: #475569;"></i>
+                            Henüz bir arıza kaydı oluşturmadınız.
                         </td>
                     </tr>
                 }
-            }
-        </tbody>
-    </table>
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="color: #94a3b8; vertical-align: middle;">@item.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td class="fw-bold text-light" style="vertical-align: middle;">@item.Baslik</td>
+                            <td style="color: #cbd5e1; vertical-align: middle;">@item.Aciklama</td>
+                            <td class="text-end pe-4" style="vertical-align: middle;">
+                                @if (item.Durum == "Beklemede")
+                                {
+                                    <span class="badge" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid #f59e0b; padding: 6px 12px; border-radius: 6px;">Beklemede</span>
+                                }
+                                else if (item.Durum == "Çözülüyor")
+                                {
+                                    <span class="badge" style="background-color: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid #38bdf8; padding: 6px 12px; border-radius: 6px;">Çözülüyor</span>
+                                }
+                                else
+                                {
+                                    <span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid #10b981; padding: 6px 12px; border-radius: 6px;">Çözüldü</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

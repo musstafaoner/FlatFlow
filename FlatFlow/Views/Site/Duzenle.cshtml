@@ -1,0 +1,39 @@
+﻿@model FlatFlow.Models.Site
+@{
+    ViewData["Title"] = "Site Düzenle";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-7">
+        <div class="d-flex align-items-center mb-4">
+            <a asp-action="Index" class="btn btn-sm me-3" style="background-color: #334155; color: #f8fafc; border-radius: 8px;">
+                <i class="fa-solid fa-arrow-left"></i> Sitelerime Dön
+            </a>
+            <h3 class="fw-bold mb-0" style="color: #ffffff !important;">Site Bilgilerini <span style="color: #38bdf8 !important;">Düzenle</span></h3>
+        </div>
+
+        <div class="p-4" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+
+            <form asp-action="Duzenle" method="post">
+                <input type="hidden" asp-for="SiteId" />
+
+                <div class="mb-4">
+                    <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Site / Apartman Adı</label>
+                    <input type="text" asp-for="Ad" class="form-control form-control-lg" required
+                           style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; border-radius: 10px;" />
+                </div>
+
+                <div class="mb-4">
+                    <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Açık Adres Bilgisi</label>
+                    <textarea asp-for="Adres" class="form-control" rows="3" required
+                              style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px; resize: none;"></textarea>
+                </div>
+
+                <button type="submit" class="btn w-100 fw-bold" style="background-color: #38bdf8; color: #000; padding: 14px; border-radius: 10px; transition: 0.3s;">
+                    <i class="fa-solid fa-floppy-disk me-2"></i> Değişiklikleri Kaydet
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>

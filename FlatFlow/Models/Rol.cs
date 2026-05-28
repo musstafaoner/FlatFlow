@@ -4,7 +4,6 @@
     {
         public int RolId { get; set; }
         public string Ad { get; set; } 
-
         public ICollection<Kullanici> Kullanicilar { get; set; }
     }
 }

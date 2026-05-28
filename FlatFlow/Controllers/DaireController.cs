@@ -16,9 +16,32 @@ namespace FlatFlow.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string arananBlok)
         {
-            var daireler = await _context.Daireler.Include(d => d.Kullanici).ToListAsync();
+            int? aktifSiteId = HttpContext.Session.GetInt32("AktifSiteId");
+
+            if (aktifSiteId == null || aktifSiteId == 0)
+            {
+                return RedirectToAction("Index", "Site");
+            }
+
+            var sorgu = _context.Daireler
+                .Include(d => d.Kullanici)
+                .Where(d => d.SiteId == aktifSiteId);
+
+            var bloklar = await sorgu.Select(d => d.Blok).Distinct().ToListAsync();
+            ViewBag.Bloklar = bloklar;
+
+            ViewBag.SeciliBlok = arananBlok;
+
+            if (!string.IsNullOrEmpty(arananBlok))
+            {
+                sorgu = sorgu.Where(d => d.Blok == arananBlok);
+            }
+
+            var daireler = await sorgu.ToListAsync();
+
             return View(daireler);
         }
 
@@ -38,9 +61,58 @@ namespace FlatFlow.Controllers
         [HttpPost]
         public async Task<IActionResult> Ekle(Daire model)
         {
-            model.BosMu = model.KullaniciId == null;
+            int? aktifSiteId = HttpContext.Session.GetInt32("AktifSiteId");
+
+            if (aktifSiteId == null || aktifSiteId == 0)
+            {
+                return RedirectToAction("Index", "Site");
+            }
+
+            model.SiteId = aktifSiteId.Value;
+
+            model.BosMu = !model.KullaniciId.HasValue;
+
             _context.Daireler.Add(model);
             await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Duzenle(int id)
+        {
+            var daire = await _context.Daireler.FindAsync(id);
+            if (daire == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Sakinler = await _context.Kullanicilar
+                .Include(k => k.Rol)
+                .Where(k => k.Rol.Ad == "Sakin")
+                .ToListAsync();
+
+            return View(daire);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Duzenle(Daire model)
+        {
+            var mevcutDaire = await _context.Daireler.FindAsync(model.DaireId);
+            if (mevcutDaire == null)
+            {
+                return NotFound();
+            }
+
+            mevcutDaire.Blok = model.Blok;
+            mevcutDaire.KapiNumarasi = model.KapiNumarasi;
+            mevcutDaire.Tip = model.Tip;
+            mevcutDaire.KullaniciId = model.KullaniciId;
+
+            mevcutDaire.BosMu = !model.KullaniciId.HasValue;
+
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
     }

@@ -5,6 +5,8 @@
         public int Id { get; set; }
         public string Baslik { get; set; }
         public string Icerik { get; set; }
+        public int SiteId { get; set; }
+        public Site Site { get; set; }
         public System.DateTime OlusturulmaTarihi { get; set; }
     }
 }

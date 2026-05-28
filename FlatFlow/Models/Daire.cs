@@ -7,9 +7,10 @@
         public string KapiNumarasi { get; set; }
         public string Tip { get; set; } 
         public bool BosMu { get; set; }
-
+        public int SiteId { get; set; }
         public int? KullaniciId { get; set; }
         public Kullanici Kullanici { get; set; }
+        public Site Site { get; set; }
 
         public ICollection<Aidat> Aidatlar { get; set; }
     }

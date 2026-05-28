@@ -3,49 +3,59 @@
     var daireler = ViewBag.Daireler as List<FlatFlow.Models.Daire>;
 }
 
-<h2 class="text-success mt-3 mb-4">Daireye Aidat Yansıt</h2>
-
-<div class="card shadow-sm p-4" style="max-width: 600px;">
-    
-    <form action="/Aidat/Ekle" method="post">
-        
-        <div class="mb-3">
-            <label class="form-label fw-bold">Hangi Daireye Yansıtılacak?</label>
-            <select name="DaireId" class="form-select" required>
-                <option value="">Daire Seçiniz...</option>
-                @if (daireler != null)
-                {
-                    foreach (var daire in daireler)
-                    {
-                        <option value="@daire.DaireId">@daire.Blok Blok - Kapı No: @daire.KapiNumarasi</option>
-                    }
-                }
-            </select>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-7">
+        <div class="d-flex align-items-center mb-4">
+            <a href="/Aidat/Index" class="btn btn-sm me-3" style="background-color: #334155; color: #f8fafc; border-radius: 8px;">
+                <i class="fa-solid fa-arrow-left"></i> Listeye Dön
+            </a>
+            <h3 class="fw-bold mb-0" style="color: #ffffff !important;">Daireye Aidat <span style="color: #ef4444 !important;">Yansıt</span></h3>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label fw-bold">Tutar (₺)</label>
-            <input type="number" step="0.01" name="Tutar" class="form-control" placeholder="Örn: 500" required />
-        </div>
+        <div class="p-4" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <form action="/Aidat/Ekle" method="post">
+                <div class="mb-4">
+                    <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Hangi Daireye Yansıtılacak?</label>
+                    <select name="DaireId" class="form-select" required style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;">
+                        <option value="">Daire Seçiniz...</option>
+                        @if (daireler != null)
+                        {
+                            foreach (var daire in daireler)
+                            {
+                                <option value="@daire.DaireId">@daire.Blok Blok - Kapı No: @daire.KapiNumarasi</option>
+                            }
+                        }
+                    </select>
+                </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Ay</label>
-                <select name="Ay" class="form-select" required>
-                    <option value="">Seçiniz...</option>
-                    @for (int i = 1; i <= 12; i++)
-                    {
-                        <option value="@i">@i. Ay</option>
-                    }
-                </select>
-            </div>
-            <div class="col-md-6 mb-4">
-                <label class="form-label fw-bold">Yıl</label>
-                <input type="number" name="Yil" class="form-control" value="@DateTime.Now.Year" required />
-            </div>
-        </div>
+                <div class="mb-4">
+                    <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Tutar (₺)</label>
+                    <input type="number" step="0.01" name="Tutar" class="form-control" placeholder="Örn: 500" required
+                           style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;" />
+                </div>
 
-        <button type="submit" class="btn btn-success fw-bold w-100 py-2">Aidatı Yansıt</button>
-        <a href="/Aidat/Index" class="btn btn-secondary w-100 mt-2">Listeye Dön</a>
-    </form>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Ay</label>
+                        <select name="Ay" class="form-select" required style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;">
+                            <option value="">Seçiniz...</option>
+                            @for (int i = 1; i <= 12; i++)
+                            {
+                                <option value="@i">@i. Ay</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Yıl</label>
+                        <input type="number" name="Yil" class="form-control" value="@DateTime.Now.Year" required
+                               style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn w-100 fw-bold" style="background-color: #ef4444; color: #fff; padding: 14px; border-radius: 10px; transition: 0.3s;">
+                    <i class="fa-solid fa-file-invoice-dollar me-2"></i> Aidatı Yansıt
+                </button>
+            </form>
+        </div>
+    </div>
 </div>

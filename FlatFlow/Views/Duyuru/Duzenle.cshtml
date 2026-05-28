@@ -1,40 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Yeni Duyuru Yayınla";
+﻿@model FlatFlow.Models.Duyuru
+@{
+    ViewData["Title"] = "Duyuru Düzenle";
 }
 
 <div class="row justify-content-center mt-4">
     <div class="col-md-8">
         <div class="d-flex align-items-center mb-4">
-            <a href="/Home/Index" class="btn btn-sm me-3" style="background-color: #334155; color: #f8fafc; border-radius: 8px;">
-                <i class="fa-solid fa-arrow-left"></i> Vazgeç
+            <a asp-action="Index" class="btn btn-sm me-3" style="background-color: #334155; color: #f8fafc; border-radius: 8px;">
+                <i class="fa-solid fa-arrow-left"></i> Listeye Dön
             </a>
-            <h3 class="fw-bold mb-0" style="color: #ffffff !important;">Apartman Panosuna <span style="color: #38bdf8 !important;">Duyuru Yaz</span></h3>
+            <h3 class="fw-bold mb-0" style="color: #ffffff !important;">Duyuruyu <span style="color: #38bdf8 !important;">Düzenle</span></h3>
         </div>
 
         <div class="p-4" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
 
-            <div class="alert mb-4" style="background-color: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; border-radius: 10px;">
-                <i class="fa-solid fa-circle-info me-2"></i>
-                <b>Bilgi:</b> Burada yayınladığınız duyurular tüm bina sakinlerinin anasayfasında anlık olarak görünecektir.
-            </div>
+            <form asp-action="Duzenle" method="post">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="SiteId" />
 
-            <form action="/Duyuru/Ekle" method="post">
                 <div class="mb-4">
                     <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Duyuru Başlığı</label>
-                    <input type="text" name="Baslik" class="form-control form-control-lg" placeholder="Örn: Su Kesintisi Hakkında" required
+                    <input type="text" asp-for="Baslik" class="form-control form-control-lg" required
                            style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; border-radius: 10px;" />
                 </div>
 
                 <div class="mb-4">
                     <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Duyuru İçeriği</label>
-                    <textarea name="Icerik" class="form-control" rows="6" placeholder="Bina sakinlerine iletmek istediğiniz detaylı mesajı buraya yazın..." required
+                    <textarea asp-for="Icerik" class="form-control" rows="6" required
                               style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px; resize: none;"></textarea>
                 </div>
 
                 <button type="submit" class="btn w-100 fw-bold" style="background-color: #38bdf8; color: #000; padding: 14px; border-radius: 10px; transition: 0.3s;">
-                    <i class="fa-solid fa-bullhorn me-2"></i> Duyuruyu Yayınla
+                    <i class="fa-solid fa-floppy-disk me-2"></i> Değişiklikleri Kaydet
                 </button>
             </form>
+
         </div>
     </div>
 </div>

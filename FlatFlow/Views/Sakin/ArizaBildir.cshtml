@@ -2,22 +2,33 @@
     ViewData["Title"] = "Arıza Bildir";
 }
 
-<h2 class="text-danger mt-3 mb-4">Yeni Arıza Bildirimi</h2>
-
-<div class="card shadow-sm p-4" style="max-width: 600px;">
-    <form action="/Sakin/ArizaBildir" method="post">
-        
-        <div class="mb-3">
-            <label class="form-label fw-bold">Konu Başlığı</label>
-            <input type="text" name="Baslik" class="form-control" placeholder="Örn: Asansör Çalışmıyor" required />
+<div class="row justify-content-center mt-4">
+    <div class="col-md-7">
+        <div class="d-flex align-items-center mb-4">
+            <a href="/Sakin/Arizalarim" class="btn btn-sm me-3" style="background-color: #334155; color: #f8fafc; border-radius: 8px;">
+                <i class="fa-solid fa-arrow-left"></i> Geri
+            </a>
+            <h3 class="fw-bold mb-0" style="color: #ffffff !important;">Yeni Arıza <span style="color: #ef4444 !important;">Bildirimi</span></h3>
         </div>
 
-        <div class="mb-4">
-            <label class="form-label fw-bold">Arıza Detayı</label>
-            <textarea name="Aciklama" class="form-control" rows="4" placeholder="Lütfen sorunu detaylıca açıklayın..." required></textarea>
-        </div>
+        <div class="p-4" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <form action="/Sakin/ArizaBildir" method="post">
+                <div class="mb-4">
+                    <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Konu Başlığı</label>
+                    <input type="text" name="Baslik" class="form-control" placeholder="Örn: Asansör Çalışmıyor" required
+                           style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;" />
+                </div>
 
-        <button type="submit" class="btn btn-danger fw-bold w-100 py-2">Bildirimi Gönder</button>
-        <a href="/Sakin/Arizalarim" class="btn btn-secondary w-100 mt-2">İptal Et</a>
-    </form>
+                <div class="mb-4">
+                    <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Arıza Detayı</label>
+                    <textarea name="Aciklama" class="form-control" rows="4" placeholder="Lütfen sorunu detaylıca açıklayın..." required
+                              style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px; resize: none;"></textarea>
+                </div>
+
+                <button type="submit" class="btn w-100 fw-bold" style="background-color: #ef4444; color: #fff; padding: 14px; border-radius: 10px; transition: 0.3s;">
+                    <i class="fa-solid fa-paper-plane me-2"></i> Bildirimi Gönder
+                </button>
+            </form>
+        </div>
+    </div>
 </div>

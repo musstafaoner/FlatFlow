@@ -1,0 +1,62 @@
+﻿@model IEnumerable<FlatFlow.Models.Duyuru>
+@{
+    ViewData["Title"] = "Duyuru Yönetimi";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+    <h2 class="fw-bold mb-0" style="color: #ffffff !important;">Apartman <span style="color: #38bdf8 !important;">Duyuruları</span></h2>
+    <a asp-action="Ekle" class="btn fw-bold" style="background-color: #38bdf8; color: #000; border-radius: 10px; padding: 10px 20px; transition: 0.3s;">
+        <i class="fa-solid fa-plus me-2"></i> Yeni Duyuru Ekle
+    </a>
+</div>
+
+<div class="p-0" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3); overflow: hidden;">
+    <div class="table-responsive">
+        <table class="table table-borderless mb-0">
+            <thead style="border-bottom: 1px solid #334155; background-color: rgba(15, 23, 42, 0.5);">
+                <tr>
+                    <th style="color: #cbd5e1; padding: 16px; width: 15%;">TARİH</th>
+                    <th style="color: #cbd5e1; padding: 16px; width: 25%;">BAŞLIK</th>
+                    <th style="color: #cbd5e1; padding: 16px; width: 45%;">İÇERİK</th>
+                    <th class="text-end pe-4" style="color: #cbd5e1; padding: 16px; width: 15%;">İŞLEMLER</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-5" style="color: #64748b;">
+                            <i class="fa-solid fa-bullhorn fs-2 mb-3 d-block"></i>
+                            Sitenizde henüz yayınlanmış bir duyuru bulunmuyor.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #334155; background-color: transparent;">
+                            <td style="color: #94a3b8; vertical-align: middle; padding: 16px;">@item.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td class="fw-bold text-light" style="vertical-align: middle; padding: 16px;">@item.Baslik</td>
+                            <td style="color: #cbd5e1; vertical-align: middle; padding: 16px;">
+                                @(item.Icerik.Length > 70 ? item.Icerik.Substring(0, 70) + "..." : item.Icerik)
+                            </td>
+                            <td class="text-end pe-4" style="vertical-align: middle; padding: 16px;">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-action="Duzenle" asp-route-id="@item.Id" class="btn btn-sm d-flex align-items-center justify-content-center" style="background-color: transparent; border: 1px solid #38bdf8; color: #38bdf8; border-radius: 8px; width: 32px; height: 32px; transition: 0.3s;" title="Düzenle">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <form asp-action="Sil" asp-route-id="@item.Id" method="post" class="m-0">
+                                        <button type="submit" class="btn btn-sm d-flex align-items-center justify-content-center" style="background-color: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; width: 32px; height: 32px; transition: 0.3s;" title="Sil" onclick="return confirm('Bu duyuruyu silmek istediğinize emin misiniz?');">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

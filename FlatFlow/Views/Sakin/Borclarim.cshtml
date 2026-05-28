@@ -3,60 +3,73 @@
     ViewData["Title"] = "Borçlarım";
 }
 
-<h2 class="text-primary mt-3 mb-4">Mevcut Borçlarım ve Aidat Takibi</h2>
+<div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+    <h2 class="fw-bold mb-0" style="color: #ffffff !important;">Mevcut Borçlarım ve <span style="color: #38bdf8 !important;">Aidat Takibi</span></h2>
+</div>
 
-<div class="card shadow-sm p-3">
-    <table class="table table-hover table-bordered mt-2">
-        <thead class="table-light">
-            <tr>
-                <th>Daire Bilgisi</th>
-                <th>Dönem (Ay/Yıl)</th>
-                <th>Tutar (₺)</th>
-                <th>Durum</th>
-                <th>İşlem</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model == null || !Model.Any())
-            {
+<div class="custom-card p-0">
+    <div class="table-responsive">
+        <table class="table table-borderless mb-0">
+            <thead>
                 <tr>
-                    <td colspan="5" class="text-center text-muted py-4">Üzerinize tanımlı herhangi bir borç bulunmamaktadır.</td>
+                    <th>Daire Bilgisi</th>
+                    <th>Dönem (Ay/Yıl)</th>
+                    <th>Tutar (₺)</th>
+                    <th>Durum</th>
+                    <th class="text-end pe-4">İşlem</th>
                 </tr>
-            }
-            else
-            {
-                foreach (var item in Model)
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
                 {
                     <tr>
-                        <td><b>@item.Daire.Blok Blok</b> - Daire: @item.Daire.KapiNumarasi</td>
-                        <td>@item.Ay / @item.Yil</td>
-                        <td class="fw-bold text-danger">@item.Tutar ₺</td>
-                        <td>
-                            @if (item.OdendiMi)
-                            {
-                                <span class="badge bg-success">Ödendi</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning text-dark">Ödenmedi</span>
-                            }
-                        </td>
-                        <td>
-                            @if (!item.OdendiMi)
-                            {
-                                <form action="/Sakin/OdemeYap" method="post" style="display:inline;">
-                                    <input type="hidden" name="aidatId" value="@item.AidatId" />
-                                    <button type="submit" class="btn btn-sm btn-success fw-bold">Kredi Kartı ile Öde</button>
-                                </form>
-                            }
-                            else
-                            {
-                                <button class="btn btn-sm btn-secondary" disabled>Makbuz İndir</button>
-                            }
+                        <td colspan="5" class="text-center py-5" style="color: #64748b;">
+                            <i class="fa-solid fa-check-circle fs-2 mb-3 d-block" style="color: #10b981;"></i>
+                            Üzerinize tanımlı herhangi bir borç bulunmamaktadır.
                         </td>
                     </tr>
                 }
-            }
-        </tbody>
-    </table>
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold text-light" style="vertical-align: middle;">
+                                @item.Daire.Blok Blok <span style="color: #94a3b8; font-weight: normal;">- Daire: @item.Daire.KapiNumarasi</span>
+                            </td>
+                            <td style="color: #94a3b8; vertical-align: middle;">@item.Ay / @item.Yil</td>
+                            <td class="fw-bold" style="color: #ef4444; vertical-align: middle;">@item.Tutar.ToString("N2") ₺</td>
+                            <td style="vertical-align: middle;">
+                                @if (item.OdendiMi)
+                                {
+                                    <span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid #10b981; padding: 6px 12px; border-radius: 6px;">Ödendi</span>
+                                }
+                                else
+                                {
+                                    <span class="badge" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid #f59e0b; padding: 6px 12px; border-radius: 6px;">Ödenmedi</span>
+                                }
+                            </td>
+                            <td class="text-end pe-4" style="vertical-align: middle;">
+                                @if (!item.OdendiMi)
+                                {
+                                    <form action="/Sakin/OdemeYap" method="post" class="m-0">
+                                        <input type="hidden" name="aidatId" value="@item.AidatId" />
+                                        <button type="submit" class="btn btn-sm fw-bold" style="background-color: #10b981; color: #000; border-radius: 8px; padding: 8px 16px; transition: 0.3s;">
+                                            Kredi Kartı ile Öde
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm fw-bold" style="background-color: transparent; border: 1px solid #334155; color: #64748b; border-radius: 8px; padding: 8px 16px;" disabled>
+                                        <i class="fa-solid fa-download me-1"></i> Makbuz
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

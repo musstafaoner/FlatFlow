@@ -6,13 +6,64 @@
     <title>@ViewData["Title"] - FlatFlow</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        /* FOOTER SABİTLEME */
+        html, body { height: 100%; margin: 0; }
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0; 
+            display: flex;
+            flex-direction: column;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .navbar { background-color: #0f172a !important; border-bottom: 1px solid #334155; }
+
+        .content-wrapper { flex: 1 0 auto; padding-top: 2rem; padding-bottom: 2rem; }
+
+        .footer {
+            flex-shrink: 0;
+            border-top: 1px solid #334155;
+            background-color: #0f172a;
+            color: #64748b;
+            padding: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        /* Tüm tablolara otomatik uygulanan tasarım */
+        .table { color: #e2e8f0; vertical-align: middle; margin-bottom: 0; }
+        .table thead th {
+            border-bottom: 2px solid #38bdf8;
+            background-color: #1e293b;
+            color: #f8fafc;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 16px;
+            letter-spacing: 0.5px;
+        }
+        .table tbody td {
+            border-bottom: 1px solid #334155;
+            background-color: #0f172a;
+            color: #cbd5e1;
+            padding: 16px;
+        }
+        .table tbody tr:hover td { background-color: #1e293b; transition: 0.2s; }
+
+        /* Kart Tasarımları */
+        .custom-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom border-secondary mb-4" style="background-color: #0f172a;">
+        <nav class="navbar navbar-expand-sm navbar-dark mb-0">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold text-info" asp-area="" asp-controller="Home" asp-action="Index">FlatFlow</a>
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index" style="color: #38bdf8;">FlatFlow</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -20,14 +71,17 @@
                     <ul class="navbar-nav flex-grow-1 ms-3">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Home" asp-action="Index">Dashboard</a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link text-light" asp-controller="Home" asp-action="Index">Dashboard</a></li>
                             @if (User.IsInRole("Yonetici"))
                             {
                                 <li class="nav-item"><a class="nav-link" asp-controller="Daire" asp-action="Index">Daireler</a></li>
                                 <li class="nav-item"><a class="nav-link" asp-controller="Aidat" asp-action="Index">Aidatlar</a></li>
                                 <li class="nav-item"><a class="nav-link" asp-controller="Ariza" asp-action="Index">Arızalar</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Site" asp-action="Index" style="color: #38bdf8 !important; font-weight: 600;">
+                                        <i class="fa-solid fa-city me-1"></i> Sitelerim
+                                    </a>
+                                </li>
                             }
                             else if (User.IsInRole("Sakin"))
                             {
@@ -36,30 +90,42 @@
                             }
                         }
                     </ul>
-                    <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item d-flex align-items-center me-3">
-                                <span class="badge bg-secondary me-2">@User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value</span>
-                                <span class="text-light fw-bold">@User.Identity.Name</span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-outline-danger btn-sm" asp-controller="Hesap" asp-action="CikisYap">Çıkış Yap</a>
-                            </li>
-                        }
-                    </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="text-light d-flex align-items-center">
+                                @if (User.IsInRole("Yonetici"))
+                                {
+                                    <span class="badge bg-secondary me-2" style="border-radius: 6px;">Yönetici</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary me-2" style="border-radius: 6px;">Sakin</span>
+                                }
+                                <strong style="color: #f8fafc;">@User.Identity.Name</strong>
+                            </span>
+
+                            <a asp-controller="Hesap" asp-action="Profil" class="btn btn-sm d-flex align-items-center justify-content-center" style="background-color: transparent; border: 1px solid #38bdf8; color: #38bdf8; border-radius: 8px; width: 32px; height: 32px; transition: 0.3s;" title="Profilimi Düzenle">
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+
+                            <a asp-controller="Hesap" asp-action="CikisYap" class="btn btn-sm fw-bold" style="background-color: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; border-radius: 8px; padding: 4px 12px; transition: 0.3s;">
+                                Çıkış Yap
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3 text-light">
+    <div class="container content-wrapper">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top border-secondary text-center mt-5 py-4 text-muted">
+    <footer class="footer text-center">
         <div class="container">
             &copy; 2026 - FlatFlow Site Yönetim Sistemleri
         </div>

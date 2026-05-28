@@ -86,7 +86,6 @@ namespace FlatFlow.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            // Telefon numarasını temizleyerek kaydediyoruz
             var yeniKullanici = new Kullanici
             {
                 Ad = model.Ad,
@@ -101,6 +100,56 @@ namespace FlatFlow.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("GirisYap");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profil()
+        {
+            var kullaniciIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(kullaniciIdStr))
+            {
+                return RedirectToAction("GirisYap");
+            }
+
+            int kullaniciId = int.Parse(kullaniciIdStr);
+            var kullanici = await _context.Kullanicilar.FindAsync(kullaniciId);
+
+            if (kullanici == null)
+            {
+                return NotFound();
+            }
+
+            return View(kullanici);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Profil(Kullanici model, string? YeniSifre)
+        {
+            var kullaniciIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(kullaniciIdStr)) return RedirectToAction("GirisYap");
+
+            int kullaniciId = int.Parse(kullaniciIdStr);
+            var mevcutKullanici = await _context.Kullanicilar.FindAsync(kullaniciId);
+
+            if (mevcutKullanici != null)
+            {
+                mevcutKullanici.Ad = model.Ad;
+                mevcutKullanici.Soyad = model.Soyad;
+                mevcutKullanici.Eposta = model.Eposta;
+                mevcutKullanici.TelefonNumarasi = model.TelefonNumarasi;
+
+                if (!string.IsNullOrEmpty(YeniSifre))
+                {
+                    mevcutKullanici.Sifre = YeniSifre;
+                }
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
         }
     }
 }

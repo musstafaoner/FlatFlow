@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace FlatFlow.Controllers
 {
-    [Authorize(Roles = "Sakin")] // SADECE BİNA SAKİNLERİ GİREBİLİR
+    [Authorize(Roles = "Sakin")]
     public class SakinController : Controller
     {
         private readonly AppDbContext _context;
@@ -16,17 +16,14 @@ namespace FlatFlow.Controllers
             _context = context;
         }
 
-        // 1. SAKİNİN KENDİ BORÇLARINI LİSTELEME EKRANI
         public async Task<IActionResult> Borclarim()
         {
-            // Giriş yapan kullanıcının ID'sini çerezden (Claims) çekiyoruz
             var kullaniciIdUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (kullaniciIdUserId == null) return RedirectToAction("GirisYap", "Hesap");
 
             int id = int.Parse(kullaniciIdUserId);
 
-            // Veritabanından sadece bu kullanıcıya ait dairelerin aidatlarını getiriyoruz
             var borclar = await _context.Aidatlar
                 .Include(a => a.Daire)
                 .Where(a => a.Daire.KullaniciId == id)
@@ -35,8 +32,6 @@ namespace FlatFlow.Controllers
             return View(borclar);
         }
 
-        // 2. ÖDEME YAPMA SİMÜLASYONU (POST)
-        // Sakin "Öde" butonuna bastığında aidat durumunu "Ödendi" yapacak ve Ödemeler tablosuna kayıt atacak
         [HttpPost]
         public async Task<IActionResult> OdemeYap(int aidatId)
         {
@@ -45,10 +40,8 @@ namespace FlatFlow.Controllers
 
             if (aidat != null && kullaniciIdUserId != null)
             {
-                // 1. Aidat durumunu ödendi yap
                 aidat.OdendiMi = true;
 
-                // 2. Ödemeler tablosuna (6. tablomuz) log kaydı at
                 var yeniOdeme = new Odeme
                 {
                     AidatId = aidat.AidatId,
@@ -64,7 +57,6 @@ namespace FlatFlow.Controllers
             return RedirectToAction("Borclarim");
         }
 
-        // SAKİNİN KENDİ OLUŞTURDUĞU ARIZALARI LİSTELEME
         public async Task<IActionResult> Arizalarim()
         {
             var kullaniciId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -76,26 +68,39 @@ namespace FlatFlow.Controllers
             return View(arizalar);
         }
 
-        // YENİ ARIZA BİLDİRME EKRANI (GET)
         [HttpGet]
         public IActionResult ArizaBildir()
         {
             return View();
         }
 
-        // YENİ ARIZA BİLDİRME İŞLEMİ (POST)
         [HttpPost]
         public async Task<IActionResult> ArizaBildir(string Baslik, string Aciklama)
         {
-            var kullaniciId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var kullaniciIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(kullaniciIdStr))
+            {
+                return RedirectToAction("GirisYap", "Hesap");
+            }
+
+            int kullaniciId = int.Parse(kullaniciIdStr);
+
+            var daire = await _context.Daireler.FirstOrDefaultAsync(d => d.KullaniciId == kullaniciId);
+
+            if (daire == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             var yeniAriza = new ArizaTalep
             {
                 Baslik = Baslik,
                 Aciklama = Aciklama,
-                Durum = "Beklemede", // Varsayılan durum
-                OlusturulmaTarihi = System.DateTime.Now,
-                KullaniciId = int.Parse(kullaniciId)
+                Durum = "Beklemede",
+                OlusturulmaTarihi = DateTime.Now,
+                KullaniciId = kullaniciId,
+                SiteId = daire.SiteId 
             };
 
             _context.ArizaTalepleri.Add(yeniAriza);

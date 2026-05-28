@@ -10,7 +10,8 @@
 
         public int DaireId { get; set; }
         public Daire Daire { get; set; }
-
+        public int SiteId { get; set; }
+        public Site Site { get; set; }
         public ICollection<Odeme> Odemeler { get; set; }
     }
 }

@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Yeni Daire Ekle";
+﻿@model FlatFlow.Models.Daire
+@{
+    ViewData["Title"] = "Daire Düzenle";
     var sakinler = ViewBag.Sakinler as List<FlatFlow.Models.Kullanici>;
 }
 
@@ -9,27 +10,29 @@
             <a href="/Daire/Index" class="btn btn-sm me-3" style="background-color: #334155; color: #f8fafc; border-radius: 8px;">
                 <i class="fa-solid fa-arrow-left"></i> Listeye Dön
             </a>
-            <h3 class="fw-bold mb-0" style="color: #ffffff !important;">Yeni Daire <span style="color: #38bdf8 !important;">Oluştur</span></h3>
+            <h3 class="fw-bold mb-0" style="color: #ffffff !important;">Daire <span style="color: #38bdf8 !important;">Düzenle</span></h3>
         </div>
 
         <div class="p-4" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
-            <form action="/Daire/Ekle" method="post">
+            <form asp-action="Duzenle" method="post">
+                <input type="hidden" asp-for="DaireId" />
+
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Blok Adı</label>
-                        <input type="text" name="Blok" class="form-control" placeholder="Örn: A Blok" required
+                        <input type="text" asp-for="Blok" class="form-control" placeholder="Örn: A Blok" required
                                style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;" />
                     </div>
                     <div class="col-md-6">
                         <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Kapı Numarası</label>
-                        <input type="text" name="KapiNumarasi" class="form-control" placeholder="Örn: 15" required
+                        <input type="text" asp-for="KapiNumarasi" class="form-control" placeholder="Örn: 15" required
                                style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;" />
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Daire Tipi</label>
-                    <select name="Tip" class="form-select" required style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;">
+                    <select asp-for="Tip" class="form-select" required style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;">
                         <option value="">Seçiniz...</option>
                         <option value="1+1">1+1</option>
                         <option value="2+1">2+1</option>
@@ -39,8 +42,8 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Oturan Sakin (İsteğe Bağlı)</label>
-                    <select name="KullaniciId" class="form-select mb-2" style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;">
+                    <label class="fw-bold mb-2" style="color: #cbd5e1 !important; font-size: 0.9rem;">Oturan Sakin</label>
+                    <select asp-for="KullaniciId" class="form-select mb-2" style="background-color: #0f172a !important; border: 1px solid #475569 !important; color: #ffffff !important; padding: 12px 16px; border-radius: 10px;">
                         <option value="">-- Daire Boş --</option>
                         @if (sakinler != null)
                         {
@@ -50,11 +53,11 @@
                             }
                         }
                     </select>
-                    <small style="color: #94a3b8 !important;">Eğer daire boşsa seçmeden geçebilirsiniz.</small>
+                    <small style="color: #94a3b8 !important;">Eğer daireyi boşaltmak istiyorsanız "-- Daire Boş --" seçeneğini seçin.</small>
                 </div>
 
-                <button type="submit" class="btn w-100 fw-bold" style="background-color: #10b981; color: #fff; padding: 14px; border-radius: 10px; transition: 0.3s;">
-                    <i class="fa-solid fa-save me-2"></i> Daireyi Kaydet
+                <button type="submit" class="btn w-100 fw-bold" style="background-color: #38bdf8; color: #000; padding: 14px; border-radius: 10px; transition: 0.3s;">
+                    <i class="fa-solid fa-pen-to-square me-2"></i> Değişiklikleri Kaydet
                 </button>
             </form>
         </div>

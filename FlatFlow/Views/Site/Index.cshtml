@@ -1,0 +1,126 @@
+﻿@model IEnumerable<FlatFlow.Models.Site>
+@{
+    ViewData["Title"] = "Yönettiğim Siteler";
+}
+
+<div class="row mb-5 mt-4">
+    <div class="col-md-4">
+        <div class="p-4" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span style="color: #94a3b8; font-size: 0.9rem; font-weight: bold; text-transform: uppercase;">Toplam Daire (Aktif)</span>
+                <i class="fa-solid fa-house-chimney text-info fs-5"></i>
+            </div>
+            <h2 class="fw-bold mb-0" style="color: #f8fafc;">@ViewBag.ToplamDaire</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="p-4" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span style="color: #94a3b8; font-size: 0.9rem; font-weight: bold; text-transform: uppercase;">Aktif Yönetilen Site</span>
+                <i class="fa-solid fa-building-circle-check text-success fs-5"></i>
+            </div>
+            <h2 class="fw-bold mb-0" style="color: #f8fafc;">@ViewBag.AktifSite</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="p-4" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span style="color: #94a3b8; font-size: 0.9rem; font-weight: bold; text-transform: uppercase;">Toplam Portföy</span>
+                <i class="fa-solid fa-layer-group text-warning fs-5"></i>
+            </div>
+            <h2 class="fw-bold mb-0" style="color: #f8fafc;">@ViewBag.ToplamSite</h2>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-0" style="color: #ffffff !important;">Yönettiğim <span style="color: #38bdf8 !important;">Siteler</span></h2>
+        <span style="color: #94a3b8; font-size: 0.9rem;">Sistemde kayıtlı olan tüm tesisler aşağıda listelenmektedir.</span>
+    </div>
+    <a asp-action="Ekle" class="btn fw-bold" style="background-color: #38bdf8; color: #000; border-radius: 10px; padding: 10px 20px; transition: 0.3s;">
+        <i class="fa-solid fa-plus me-2"></i> Yeni Site/Apartman Ekle
+    </a>
+</div>
+
+<div class="row">
+    @foreach (var site in Model)
+    {
+        var cardOpacity = site.AktifMi ? "1" : "0.6";
+        var cardFilter = site.AktifMi ? "none" : "grayscale(50%)";
+
+        <div class="col-md-4 mb-4">
+            <div class="p-4 h-100 d-flex flex-column" style="background-color: #1e293b !important; border: 1px solid #334155 !important; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3); opacity: @cardOpacity; filter: @cardFilter; transition: 0.3s;">
+
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(56, 189, 248, 0.1); border-radius: 12px; margin-right: 15px;">
+                            <i class="fa-solid fa-building text-info fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold text-light mb-1">
+                                @site.Ad
+                                @if (!site.AktifMi)
+                                {
+                                    <span class="badge ms-2" style="background-color: #475569; font-size: 0.7rem;">Pasif</span>
+                                }
+                            </h5>
+                            <small style="color: #94a3b8;">Kayıt: @site.KayitTarihi.ToString("dd MMM yyyy")</small>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a asp-action="Duzenle" asp-route-id="@site.SiteId" class="btn btn-sm d-flex align-items-center justify-content-center" style="background-color: transparent; border: 1px solid #38bdf8; color: #38bdf8; border-radius: 8px; width: 32px; height: 32px;" title="Düzenle">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+
+                        <form asp-action="DurumGuncelle" asp-route-id="@site.SiteId" method="post" class="m-0">
+                            @if (site.AktifMi)
+                            {
+                                <button type="submit" class="btn btn-sm d-flex align-items-center justify-content-center" style="background-color: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; color: #f59e0b; border-radius: 8px; width: 32px; height: 32px;" title="Görevi Bitir (Arşivle)">
+                                    <i class="fa-solid fa-box-archive"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-sm d-flex align-items-center justify-content-center" style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; border-radius: 8px; width: 32px; height: 32px;" title="Tekrar Aktif Et">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                </button>
+                            }
+                        </form>
+
+                        <form asp-action="Sil" asp-route-id="@site.SiteId" method="post" class="m-0">
+                            <button type="submit" class="btn btn-sm d-flex align-items-center justify-content-center" style="background-color: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; width: 32px; height: 32px;" title="Kalıcı Sil" onclick="return confirm('Emin misiniz?');">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <p class="mb-0" style="color: #cbd5e1; font-size: 0.9rem;">
+                        <i class="fa-solid fa-location-dot me-2" style="color: #94a3b8;"></i> @site.Adres
+                    </p>
+                </div>
+
+                <div class="mt-auto">
+                    @if (site.AktifMi)
+                    {
+                        <a asp-action="Yonet" asp-route-id="@site.SiteId" class="btn w-100 fw-bold" style="background-color: transparent; border: 1px solid #10b981; color: #10b981; border-radius: 10px; padding: 10px; transition: 0.3s;" onmouseover="this.style.backgroundColor='#10b981'; this.style.color='#000';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#10b981';">
+                            <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Bu Siteyi Yönet
+                        </a>
+                    }
+                    else
+                    {
+                        <button disabled class="btn w-100 fw-bold" style="background-color: #334155; color: #94a3b8; border: 1px solid #475569; border-radius: 10px; padding: 10px; cursor: not-allowed;">
+                            <i class="fa-solid fa-lock me-2"></i> Yönetim Sona Erdi
+                        </button>
+                    }
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
